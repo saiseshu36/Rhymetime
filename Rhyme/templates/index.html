@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#fff8e9">
+  <title>Rhyme Time! — Sing, smile, repeat</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=player-v5">
+</head>
+<body>
+  <div class="sky sky-one">✦</div><div class="sky sky-two">✦</div><div class="sky sky-three">✧</div>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="Rhyme Time home"><span class="brand-icon">♪</span><span>rhyme<span class="brand-pop">time</span></span></a>
+    <div class="top-note"><span class="sun-dot">☀</span> A little song goes a long way!</div>
+    <button class="sound-pill" id="musicToggle" type="button" aria-pressed="false"><span class="sound-bars">♫</span> MUSIC OFF</button>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <div class="eyebrow"><span>✿</span> LITTLE VOICES, BIG SMILES <span>✿</span></div>
+        <h1>Pick a rhyme.<br><span>Let’s sing!</span></h1>
+        <p>Tap your favorite song and sing along with us.</p>
+        <div class="hero-stickers" aria-hidden="true"><span class="sticker star-sticker">★</span><span class="sticker music-sticker">♫</span><span class="sticker heart-sticker">♥</span></div>
+      </div>
+      <div class="hero-art" aria-label="A smiling sun and clouds">
+        <div class="cloud cloud-back"></div><div class="sun-face"><span class="sun-eye">•</span><span class="sun-eye">•</span><span class="sun-smile">⌣</span><span class="sun-blush blush-left"></span><span class="sun-blush blush-right"></span></div>
+        <div class="cloud cloud-front"></div><span class="art-spark spark-a">✦</span><span class="art-spark spark-b">✧</span><div class="music-friends" aria-label="A bunny, bear, and frog ready to dance"><span class="friend friend-bunny" aria-hidden="true">🐰</span><span class="friend friend-bear" aria-hidden="true">🐻</span><span class="friend friend-frog" aria-hidden="true">🐸</span></div>
+      </div>
+    </section>
+
+    <section class="content-grid">
+      <div class="songs-panel">
+        <div class="section-heading"><div><span class="mini-kicker">YOUR SONGBOOK</span><h2>Choose a song <span>♪</span></h2></div><span class="song-count">{{ rhymes|length }} happy rhymes</span></div>
+        <div class="song-grid" id="songGrid">
+          {% for rhyme in rhymes %}
+          <button class="song-card{% if loop.first %} selected{% endif %}" data-rhyme="{{ rhyme.id }}" data-query="{{ rhyme.title }}" style="--card-color: {{ rhyme.color }}" aria-pressed="{{ 'true' if loop.first else 'false' }}">
+            <span class="card-art"><span class="card-emoji">{{ rhyme.emoji }}</span><span class="play-bubble">▶</span></span>
+            <span class="card-name">{{ rhyme.title }}</span><span class="card-hint">Tap to sing along!</span>
+          </button>
+          {% endfor %}
+        </div>
+        <div class="tip"><span class="tip-icon">💡</span><span><strong>Grown-up tip:</strong> Tap “Sing it!” to hear the rhyme read aloud.</span><span class="tip-spark">✦</span></div>
+      </div>
+
+      <aside class="player-card" id="playerCard" aria-live="polite">
+        <div class="player-top"><span class="now-playing"><span class="live-dot"></span> SONG MODE</span><button class="favorite" id="favorite" aria-label="Add to favorites">♡</button></div>
+        <div class="record-art" id="recordArt"><span class="record-emoji" id="recordEmoji">⭐</span><span class="record-note note-one">♪</span><span class="record-note note-two">♫</span></div>
+        <div class="player-title" id="playerTitle">Twinkle, Twinkle, Little Star</div>
+        <div class="player-subtitle" id="playerSubtitle">A gentle bedtime favorite</div>
+        <div class="player-subtitle audio-credit" id="audioCredit" hidden></div>
+        <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+        <div class="time-row"><span id="elapsed">0:00</span><span>RHYME TIME</span><span id="duration">0:00</span></div>
+        <div class="player-controls"><button class="control small-control" id="prevBtn" aria-label="Previous rhyme">⟨</button><button class="control main-control" id="playBtn" aria-label="Sing this rhyme">▶</button><button class="control small-control" id="nextBtn" aria-label="Next rhyme">⟩</button></div>
+        <div class="lyrics-wrap"><div class="lyrics-heading"><span>Sing along!</span><span class="lyrics-flower">✿</span></div><div class="lyrics" id="lyrics">Twinkle, twinkle, little star,<br>How I wonder what you are!<br>Up above the world so high,<br>Like a diamond in the sky.<br>Twinkle, twinkle, little star,<br>How I wonder what you are!</div></div>
+        <audio id="rhymeAudio" preload="none"></audio>
+        <video id="rhymeVideo" preload="none" playsinline></video>
+      </aside>
+    </section>
+  </main>
+  <footer><span>Made with <span class="footer-heart">♥</span> for little songbirds</span><span>♪ &nbsp; Keep singing, keep smiling! &nbsp; ♪</span></footer>
+  <div class="toast" id="toast" role="status"></div>
+  <script src="{{ url_for('static', filename='app.js') }}?v=player-v9"></script>
+</body>
+</html>
